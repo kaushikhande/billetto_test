@@ -51,3 +51,10 @@ Rails.application.configure do
   # Raise error when a before_action's only/except options reference missing actions.
   config.action_controller.raise_on_missing_callback_actions = true
 end
+
+
+Rails.configuration.to_prepare do
+  Rails.configuration.billetto = Billetto::Adapter.new(
+    api_keypair: Rails.application.credentials.dig(:billetto, :api_keypair)
+  )
+end
