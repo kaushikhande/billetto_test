@@ -80,9 +80,7 @@ Rails.application.configure do
 end
 
 Rails.configuration.to_prepare do
-  # ...
   Rails.configuration.billetto = Billetto::Adapter.new(
     api_keypair: Rails.application.credentials.dig(:billetto, :api_keypair)
   )
-  # ...
 end

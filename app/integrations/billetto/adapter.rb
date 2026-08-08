@@ -4,6 +4,7 @@ require "json"
 
 module Billetto
   class Adapter
+    # Change this
     BASE_URL = "https://billetto.dk/api/v3"
 
     def initialize(api_keypair:)
@@ -11,6 +12,7 @@ module Billetto
     end
 
     def public_events(limit:)
+      # change this
       get("/public/events", limit: limit)
     end
 
