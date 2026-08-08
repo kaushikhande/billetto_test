@@ -1,0 +1,87 @@
+<div class="events-container">
+  <h1>Events</h1>
+
+  <% if @events.any? %>
+    <div class="events-grid">
+      <% @events.each do |event| %>
+        <div class="event-card">
+          <% if event.image_url.present? %>
+            <%= image_tag event.image_url,
+                  alt: event.title,
+                  class: "event-image" %>
+          <% end %>
+
+          <div class="event-content">
+            <h2><%= event.title %></h2>
+
+            <% if event.description.present? %>
+              <p><%= event.description %></p>
+            <% end %>
+
+            <% if event.start_date.present? %>
+              <p>
+                <strong>Date:</strong>
+                <%= event.start_date.strftime("%d %B %Y, %I:%M %p") %>
+              </p>
+            <% end %>
+
+            <% if event.end_date.present? %>
+              <p>
+                <strong>Ends:</strong>
+                <%= event.end_date.strftime("%d %B %Y, %I:%M %p") %>
+              </p>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p>No events found.</p>
+  <% end %>
+</div>
+
+<style>
+  .events-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+
+  .events-container h1 {
+    margin-bottom: 30px;
+  }
+
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+  }
+
+  .event-card {
+    overflow: hidden;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+  }
+
+  .event-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .event-content {
+    padding: 20px;
+  }
+
+  .event-content h2 {
+    margin-top: 0;
+    font-size: 20px;
+  }
+
+  .event-content p {
+    line-height: 1.5;
+    color: #555;
+  }
+</style>
