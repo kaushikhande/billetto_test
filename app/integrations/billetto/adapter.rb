@@ -4,16 +4,14 @@ require "json"
 
 module Billetto
   class Adapter
-    # Change this
-    BASE_URL = "https://billetto.dk/api/v3"
+    BASE_URL = Rails.application.credentials.dig(:billetto, :base_url)
 
     def initialize(api_keypair:)
       @api_keypair = api_keypair
     end
 
     def public_events(limit:)
-      # change this
-      get("/public/events", limit: limit)
+      get(Rails.application.credentials.dig(:billetto, :public_events), limit: limit)
     end
 
     private
