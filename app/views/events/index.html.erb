@@ -1,3 +1,17 @@
+<div class="header">
+  <% if current_user.present? %>
+    <div class="user-greeting">
+      Hi, <%= current_user.name || 'Guest' %>
+      <%= link_to "Profile", ENV.fetch("CLERK_USER_PROFILE_URL"), class: "btn btn-secondary" %>
+    </div>
+  <% else %>
+    <div class="auth-buttons">
+      <%= link_to "Sign In", clerk.sign_in_url, class: "btn btn-primary" %>
+      <%= link_to "Sign Up", clerk.sign_up_url, class: "btn btn-secondary" %>
+    </div>
+  <% end %>
+</div>
+
 <div class="events-container">
   <h1>Events</h1>
 
