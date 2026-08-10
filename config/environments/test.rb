@@ -57,4 +57,6 @@ Rails.configuration.to_prepare do
   Rails.configuration.billetto = Billetto::Adapter.new(
     api_keypair: Rails.application.credentials.dig(:billetto, :api_keypair)
   )
+
+  Rails.configuration.event_store = event_store = RailsEventStore::Client.new
 end
