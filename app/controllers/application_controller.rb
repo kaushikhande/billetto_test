@@ -24,6 +24,6 @@ class ApplicationController < ActionController::Base
   end
 
   def require_authentication
-    redirect_to clerk.sign_in_url, allow_other_host: true  unless clerk.session
+    redirect_to clerk.sign_in_url, allow_other_host: true unless clerk.session
   end
 end

@@ -2,12 +2,18 @@ class EventsController < ApplicationController
   before_action :require_authentication, only: [:upvote, :downvote]
 
   def index
-    @events = Event.includes(:votes).all
+    # @events = Event.includes(:votes).all
+    @events = Event
+      .left_joins(:votes)
+      .select(
+        "events.*",
+        "COUNT(CASE WHEN votes.vote_type = 1 THEN 1 END) AS upvotes_count",
+        "COUNT(CASE WHEN votes.vote_type = 0 THEN 1 END) AS downvotes_count"
+      )
+      .group("events.id")
   end
 
   def upvote
-    puts "Here we are"
-    pp clerk
     vote(:upvote)
   end
 
@@ -20,12 +26,11 @@ class EventsController < ApplicationController
   def vote(vote_type)
     event = Event.find(params[:id])
 
-    vote = Vote.find_or_initialize_by(
+    VoteService.new(
       event: event,
-      user: current_user
-    )
-
-    vote.update!(vote_type: vote_type)
+      user: current_user,
+      vote_type: vote_type
+    ).call
 
     redirect_to events_path
   end

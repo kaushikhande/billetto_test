@@ -82,6 +82,8 @@ Rails.configuration.to_prepare do
     api_keypair: Rails.application.credentials.dig(:billetto, :api_keypair)
   )
 
+  Rails.configuration.event_store = event_store = RailsEventStore::Client.new
+
   Clerk.configure do |config|
   # Optional: Override environment variables
     config.publishable_key = Rails.application.credentials.dig(:clerk, :publishable_key)
