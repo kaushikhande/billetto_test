@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_09_181547) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_10_072911) do
   create_table "events", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "billetto_id"
     t.datetime "created_at", null: false
@@ -30,4 +30,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_09_181547) do
     t.string "name"
     t.datetime "updated_at", null: false
   end
+
+  create_table "votes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "event_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.integer "vote_type", null: false
+    t.index ["event_id", "user_id"], name: "index_votes_on_event_id_and_user_id", unique: true
+    t.index ["event_id"], name: "index_votes_on_event_id"
+    t.index ["user_id"], name: "index_votes_on_user_id"
+  end
+
+  add_foreign_key "votes", "events"
+  add_foreign_key "votes", "users"
 end
