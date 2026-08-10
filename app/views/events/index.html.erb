@@ -13,46 +13,74 @@
 </div>
 
 <div class="events-container">
-  <h1>Events</h1>
-
   <% if @events.any? %>
-    <div class="events-grid">
-      <% @events.each do |event| %>
-        <div class="event-card">
-          <% if event.image_url.present? %>
-            <%= image_tag event.image_url,
-                  alt: event.title,
-                  class: "event-image" %>
+
+    <% @events.each do |event| %>
+
+      <div class="event-card">
+
+        <% if event.image_url.present? %>
+          <%= image_tag event.image_url,
+              alt: event.title,
+              class: "event-image" %>
+        <% end %>
+
+        <div class="event-content">
+
+          <h2><%= event.title %></h2>
+
+          <% if event.description.present? %>
+            <p><%= event.description %></p>
           <% end %>
 
-          <div class="event-content">
-            <h2><%= event.title %></h2>
+          <% if event.start_date.present? %>
+            <p>
+              <strong>Date:</strong>
+              <%= event.start_date.strftime("%d %B %Y, %I:%M %p") %>
+            </p>
+          <% end %>
 
-            <% if event.description.present? %>
-              <p><%= event.description %></p>
+          <% if event.end_date.present? %>
+            <p>
+              <strong>Ends:</strong>
+              <%= event.end_date.strftime("%d %B %Y, %I:%M %p") %>
+            </p>
+          <% end %>
+
+          <div class="vote-actions">
+
+            <%= button_to upvote_event_path(event),
+                method: :post,
+                class: "vote-button upvote-button" do %>
+              👍 Upvote
+              <span class="vote-count">
+                <%= event.votes.upvote.count %>
+              </span>
             <% end %>
 
-            <% if event.start_date.present? %>
-              <p>
-                <strong>Date:</strong>
-                <%= event.start_date.strftime("%d %B %Y, %I:%M %p") %>
-              </p>
+            <%= button_to downvote_event_path(event),
+                method: :post,
+                class: "vote-button downvote-button" do %>
+              👎 Downvote
+              <span class="vote-count">
+                <%= event.votes.downvote.count %>
+              </span>
             <% end %>
 
-            <% if event.end_date.present? %>
-              <p>
-                <strong>Ends:</strong>
-                <%= event.end_date.strftime("%d %B %Y, %I:%M %p") %>
-              </p>
-            <% end %>
           </div>
+
         </div>
-      <% end %>
-    </div>
+      </div>
+
+    <% end %>
+
   <% else %>
+
     <p>No events found.</p>
+
   <% end %>
 </div>
+
 
 <style>
   .events-container {
