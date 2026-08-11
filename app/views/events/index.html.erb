@@ -51,6 +51,7 @@
 
             <%= button_to upvote_event_path(event),
                 method: :post,
+                data: { turbo: false }, 
                 class: "vote-button upvote-button" do %>
               👍 Upvote
               <span class="vote-count">
@@ -60,6 +61,7 @@
 
             <%= button_to downvote_event_path(event),
                 method: :post,
+                data: { turbo: false },
                 class: "vote-button downvote-button" do %>
               👎 Downvote
               <span class="vote-count">
