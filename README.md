@@ -76,7 +76,17 @@ Run the Rails database migrations:
 bin/rails db:migrate
 ```
 
-### 8. Run the Test Suite
+### 8. Ingest Events
+
+To fetch and ingest events from Billetto, run:
+
+```bash
+bin/rails billetto:ingest_events
+```
+
+This populates the application's events data.
+
+### 9. Run the Test Suite
 
 Run all RSpec tests:
 
@@ -86,7 +96,7 @@ bundle exec rspec
 
 All tests should pass before starting the application.
 
-### 9. Start the Rails Server
+### 10. Start the Rails Server
 
 Start the Rails development server:
 
