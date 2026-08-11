@@ -1,11 +1,11 @@
 class VoteService
   attr_reader :event, :user, :vote_type
 
-  def initialize(event:, user:, vote_type:)
+  def initialize(event:, user:, vote_type:, event_store: Rails.configuration.event_store)
     @event = event
     @user = user
     @vote_type = vote_type
-    @event_store = Rails.configuration.event_store
+    @event_store = event_store
   end
 
   def call
