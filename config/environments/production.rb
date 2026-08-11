@@ -92,4 +92,22 @@ Rails.configuration.to_prepare do
   Rails.configuration.billetto = Billetto::Adapter.new(
     api_keypair: Rails.application.credentials.dig(:billetto, :api_keypair)
   )
+
+  Rails.configuration.event_store = event_store = RailsEventStore::Client.new
+
+  Clerk.configure do |config|
+  # Optional: Override environment variables
+    config.publishable_key = Rails.application.credentials.dig(:clerk, :publishable_key)
+    config.secret_key = Rails.application.credentials.dig(:clerk, :secret_key)
+    
+    # Enable debug logging
+    config.debug = true
+    config.logger = Logger.new($stdout)
+    
+    # Exclude routes from authentication middleware
+    config.excluded_routes = ['/health', '/public/*']
+    
+    # Custom cache store (defaults to Rails.cache or ActiveSupport::Cache::MemoryStore)
+    config.cache_store = Rails.cache
+  end
 end
