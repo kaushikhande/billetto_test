@@ -3,6 +3,7 @@
     <div class="user-greeting">
       Hi, <%= current_user.name || 'Guest' %>
       <%= link_to "Profile", ENV.fetch("CLERK_USER_PROFILE_URL"), class: "btn btn-secondary" %>
+      <%= button_tag "Logout", type: "button", class: "btn btn-secondary", data: { clerk_sign_out: true } %>
     </div>
   <% else %>
     <div class="auth-buttons">
