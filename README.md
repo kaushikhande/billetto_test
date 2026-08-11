@@ -22,5 +22,3 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
-
-Rails.configuration.event_store.read.stream("Event$15").backward.limit(100).to_a
