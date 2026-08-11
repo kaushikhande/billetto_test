@@ -1,24 +1,101 @@
-# README
+# Test Integrations
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Setup
 
-Things you may want to cover:
+Follow the steps below to set up the application locally.
 
-* Ruby version
+### 1. Clone the Repository
 
-* System dependencies
+Clone the `main` branch:
 
-* Configuration
+```bash
+git clone <repository-url>
+cd test_integrations
+```
 
-* Database creation
+### 2. Configure Rails Master Key
 
-* Database initialization
+The Rails `master.key` has been provided separately via email.
 
-* How to run the test suite
+Copy the key from the email and save it to:
 
-* Services (job queues, cache servers, search engines, etc.)
+```text
+config/master.key
+```
 
-* Deployment instructions
+The key is required to decrypt the Rails application credentials.
 
-* ...
+### 3. Configure Environment Variables
+
+Copy the sample environment file:
+
+```bash
+cp .env.sample .env
+```
+
+Update `.env` with the required configuration values.
+
+### 4. Install Ruby
+
+Install **Ruby 4.0.6**.
+
+Verify the installed version:
+
+```bash
+ruby -v
+```
+
+Expected version:
+
+```text
+ruby 4.0.6
+```
+
+### 5. Create MySQL Databases
+
+Create the following MySQL databases according to the configuration in `.env`:
+
+```text
+test_integrations_development
+test_integrations_test
+```
+
+### 6. Install Dependencies
+
+Install the required Ruby gems:
+
+```bash
+bundle install
+```
+
+### 7. Run Database Migrations
+
+Run the Rails database migrations:
+
+```bash
+bin/rails db:migrate
+```
+
+### 8. Run the Test Suite
+
+Run all RSpec tests:
+
+```bash
+bundle exec rspec
+```
+
+All tests should pass before starting the application.
+
+### 9. Start the Rails Server
+
+Start the Rails development server:
+
+```bash
+bin/rails server
+```
+
+The application will be available at:
+
+```text
+http://localhost:3000
+```
