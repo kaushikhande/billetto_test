@@ -113,21 +113,27 @@ http://localhost:3000
 ### Design decisions and assumptions.
 
 1. Event
-   I have used billetto api for ingesting the events as assignment said. For this Assignment purpose, I have created the rake task for ingesting the 
-   last 10 events.
+
+   I have used billetto api for ingesting the events as assignment said.
+   For this Assignment purpose, I have created the rake task for ingesting the last 10 events.
    
-   For real work, I would have used sidekiq for ingesting, Setup the scheduled task with fix interval for ingesting the new events added. In the 
-   documentation, I 
-   have also seen the Event webhooks for various changes in event such as created, published, using this we could setup webhooks in our application.
+   For real work, I would have used sidekiq for ingesting, Setup the scheduled task with fix interval for ingesting 
+   the new events added. In the documentation, I 
+   have also seen the Event webhooks for various changes in event such as created, published,
+   using this we could setup webhooks in our application.
 
    billetto_id is considered to be unique, have created index for it in events table.
    Validated the presence of title, start and end date.
 
 2. Clerk.com
+
    Used account portal so that we do not have to create sign in and sign up pages.
-   After user is logged in first time, create user and update current_user as that user. This user table is needed at our end for vote tracibility. clerk_user_id will store the user_id from clerk.
-   Also added email and name as column names. I have kept it minimal for this assignment purpose. I have not added unique index and unique validation
-   for clerk_user_id but I should have kept it.
+   For sign in and sign up added clerk account urls to redirect user to clerk for log in and sign up.
+   After user is logged in first time and session is created for user, created user record and update current_user as that user.
+   User table is needed at our end for vote tracibility and other our app activities.
+   clerk_user_id will store the user_id from clerk.
+   Also added email and name as column names. I have kept it minimal for this assignment purpose.
+   I have not added unique index and unique validation for clerk_user_id but I should have kept it.
 
    To update the user data coming from clerk, we could create webhooks coming from clerk.com
 
@@ -143,6 +149,26 @@ http://localhost:3000
    For setting up I have refered the documentation for rails event store.
    1. gem "rails_event_store"
    2. Added migration 
-   bin/rails generate ruby_event_store:active_record:migration
+   bin/rails generate ruby_event_store:active_record:migration which adds
+   ```
+   create_table(:event_store_events, force: false) do |t|
+      t.references  :event,       null: false, type: :string, limit: 36, index: { unique: true }
+      t.string      :event_type,  null: false, index: true
+      t.binary      :metadata
+      t.binary      :data,        null: false
+      t.datetime    :created_at,  null: false, precision: 6, index: true
+      t.datetime    :valid_at,    null: true,  precision: 6, index: true
+    end
+
+    create_table(:event_store_events_in_streams, force: false) do |t|
+      t.string      :stream,      null: false
+      t.integer     :position,    null: true
+      t.references  :event,       null: false, type: :string, limit: 36, index: true, foreign_key: { to_table: :event_store_events, primary_key: :event_id }
+      t.datetime    :created_at,  null: false, precision: 6, index: true
+
+      t.index [:stream, :position], unique: true
+      t.index [:stream, :event_id], unique: true
+    end
+   ```
    bin/rails db:migrate
    3. Added Rails.configuration.event_store = event_store = RailsEventStore::Client.new in environment.rb in to prepare block.
