@@ -110,7 +110,7 @@ The application will be available at:
 http://localhost:3000
 ```
 
-Design decisions and assumptions.
+### Design decisions and assumptions.
 
 1. Event
    I have used billetto api for ingesting the events as assignment said. For this Assignment purpose, I have created the rake task for ingesting the 
